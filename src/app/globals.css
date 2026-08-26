@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-fraunces: "Fraunces", Georgia, serif;
+  --font-inter: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+body {
+  background-color: #e8e2cc;
+  color: #1b2430;
+}
+
+/* Hairline rule used between generations, like a ledger divider */
+.ledger-rule {
+  border-top: 1px solid rgba(27, 36, 48, 0.15);
+}
+
+/* The "record stamp" signature element: a small seal on each
+   person card showing how many documents are on file. */
+.record-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1.5px solid #a9812f;
+  color: #a9812f;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  transform: rotate(-6deg);
+}
+
+:focus-visible {
+  outline: 2px solid #5b7065;
+  outline-offset: 2px;
+}
