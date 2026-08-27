@@ -5,15 +5,18 @@ import DocumentUploader from "@/components/DocumentUploader";
 import DocumentList from "@/components/DocumentList";
 import type { FamilyDocument } from "@/lib/types";
 
-export default async function PersonPage({ params }: { params: { id: string } }) {
-  const supabase = createClient();
+export const dynamic = "force-dynamic";
+
+export default async function PersonPage({ params }: { params: Promise<{ id: string }> | { id: string } }) {
+  const { id } = await params;
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
   const { data: person } = await supabase
     .from("people")
     .select("*")
-    .eq("id", params.id)
+    .eq("id",id)
     .maybeSingle();
 
   if (!person) notFound();
@@ -21,7 +24,7 @@ export default async function PersonPage({ params }: { params: { id: string } })
   const { data: documents } = await supabase
     .from("documents")
     .select("*")
-    .eq("person_id", params.id)
+    .eq("person_id", id)
     .order("uploaded_at", { ascending: false });
 
   // Signed URLs expire in 1 hour - documents are never publicly accessible.

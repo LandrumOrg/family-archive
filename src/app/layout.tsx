@@ -8,7 +8,11 @@ const fraunces = Fraunces({
   weight: ["400", "500", "600"],
 });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const mono = IBM_Plex_Mono({ subsets: ["latin"], variable: "--font-mono" });
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: ["400", "500"],
+});
 
 export const metadata: Metadata = {
   title: "Family Archive",

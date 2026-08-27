@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
 // Used in Server Components, Server Actions, and Route Handlers.
 // Reads the user's session from cookies so every query is
 // automatically scoped by RLS to what that user can see.
-export function createClient() {
-  const cookieStore = cookies();
+export async function createClient() {
+  const cookieStore = await cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

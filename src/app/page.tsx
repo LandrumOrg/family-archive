@@ -3,8 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 import FamilyTree from "@/components/FamilyTree";
 import type { Person, Relationship } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) redirect("/login");
@@ -19,7 +21,7 @@ export default async function HomePage() {
 
   let familyId = membership?.family_id as string | undefined;
 
-  if (!familyId) {
+   if (!familyId) {
     const { data: newFamily, error: familyError } = await supabase
       .from("families")
       .insert({ name: "My Family", created_by: user.id })
@@ -30,9 +32,13 @@ export default async function HomePage() {
       throw new Error(familyError?.message ?? "Could not create family");
     }
 
-    await supabase
+    const { error: membershipError } = await supabase
       .from("family_members")
       .insert({ family_id: newFamily.id, user_id: user.id, role: "owner" });
+
+    if (membershipError) {
+      throw new Error(`Could not add you as owner: ${membershipError.message}`);
+    }
 
     familyId = newFamily.id;
   }
